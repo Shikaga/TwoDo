@@ -1,12 +1,31 @@
 <html>
 	<head>
-		<script src="lib/socket.io.js"></script>
-		<script type="text/javascript" src="js/main.js"></script>
+		<script type="text/javascript" src="lib/mustache.js"></script>
+		<script type="text/javascript" src="lib/knockout.js"></script>
+		<script type="text/javascript" src="lib/ko.mustache.js"></script>
+		<script type="text/javascript" src="lib/socket.io.js"></script>
+		<script type="text/javascript" src="js/TodoItem.js"></script>
 		<title>New Development Project</title>
 		<link rel="stylesheet" href="css/main.css">
+
+		<script id="todo-item-template" type="text/x-handlebars-template">
+			<div class="todoItem">
+				<div class="todoItemInner">
+					<span class="description" data-bind="click: editDescription, visible: !descriptionEditable(), html: description() == '' ? 'Enter Description' : description"></span>
+					<input class="description" data-bind="value: description, visible: descriptionEditable, hasFocus: descriptionEditable" />
+
+					<span class="comment" data-bind="click: editComment, visible: !commentEditable(), html: comment() == '' ? 'Enter Comment' : comment"></span>
+					<input class="comment" data-bind="value: comment, visible: commentEditable, hasFocus: commentEditable" />
+
+					<input class="complete" type="checkbox" data-bind="checked: complete"/>
+				</div>
+			</div>
+		</script>
 	</head>
 	<body>
 		<div id="testbar"><a class="testbar" href="test/test.html" target="_blank">Run the Tests!</a></div>
 		<div id="textLabel">Hello World!</div><input id="textBox" value="" /><button onclick="setText()">Set Text</button>
+		<span data-bind="template: { name: 'todo-item-template', foreach: todoItems }"></span>
 	</body>
+	<script type="text/javascript" src="js/main.js"></script>
 </html>
