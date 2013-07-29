@@ -66,7 +66,7 @@ if (process.env.PORT) {
 	port = Number(process.env.PORT);
 }
 
-var items = [];
+var items = {};
 console.log("Using port: " + port);
 
 io.sockets.on('connection', function (socket) {
@@ -77,8 +77,14 @@ io.sockets.on('connection', function (socket) {
 		socket.emit("itemsImage", {items: items});
 	});
 	socket.on('addItem', function(data) {
-		items.push(data);
+		items[data.id] = data.item;
 		socket.emit("itemAdded", data);
 	});
+	socket.on('itemUpdated', function(data) {
+		console.log(items);
+		console.log(data);
 
+		items[data.id] = data.item;
+		socket.emit('itemUpdated', data);
+	})
 });

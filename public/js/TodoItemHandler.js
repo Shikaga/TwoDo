@@ -9,17 +9,32 @@ TodoItemHandler.prototype.init = function() {
 }
 
 TodoItemHandler.prototype.addSerializedItems = function(itemSerialArray) {
-	for (var itemSerial in itemSerialArray.items) {
-		this.addSerializedItem(itemSerial);
+	for (var itemKey in itemSerialArray.items) {
+		var item = itemSerialArray.items[itemKey]
+		this.addSerializedItem(itemKey, item);
 	}
 }
 
-TodoItemHandler.prototype.addSerializedItem = function(itemSerial) {
-	var item = new TodoItem(itemSerial);
+TodoItemHandler.prototype.addSerializedItem = function(id, itemSerial) {
+	var item = new TodoItem(this, itemSerial);
 	this.todoItems.push(item);
 }
 
 TodoItemHandler.prototype.createItem = function() {
-	var newItem = new TodoItem();
-	socket.emit("addItem", newItem.serialize());
+	var newItem = new TodoItem(this);
+	socket.emit("addItem", {
+		"id": newItem.uniqueId,
+		item: newItem.serialize()
+	});
+}
+
+TodoItemHandler.prototype.updatedItem = function(item) {
+	socket.emit("itemUpdated", {
+		"id": item.uniqueId,
+		item: item.serialize()
+	})
+}
+
+TodoItemHandler.prototype.updateItem = function(id, item) {
+	console.log(id,item);
 }

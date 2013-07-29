@@ -12,10 +12,20 @@ socket.on('itemsImage', function(data) {
 
 socket.on('itemAdded', function(data) {
 	console.log('itemAdded', data);
-	todoItemHandler.addSerializedItem(data);
+	todoItemHandler.addSerializedItem(data.id, data.item);
+})
+
+
+socket.on('itemUpdated', function(data) {
+	console.log('itemUpdated', data);
+	todoItemHandler.updateItem(data.id, data.item);
 })
 
 function setText() {
 	var value = document.getElementById("textBox").value;
 	socket.emit("chat", {text: value});
+}
+
+function getRandomString() {
+	return Math.random().toString().substr(2);
 }
