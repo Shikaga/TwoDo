@@ -24,12 +24,31 @@
 		</script>
 	</head>
 	<body>
+	<button id="createLobbyButton" onclick="createTodoList()">Get Todo List</button>
+	<div id="todolist" style="display: none">
 		<span data-bind="template: { name: 'todo-item-template', foreach: todoItemHandler.todoItems }"></span>
 		<button onclick="todoItemHandler.createItem()">Add Item</button>
+		<button onclick="window.location.href = window.location.origin">New Todo List</button>
+	</div>
 	</body>
 	<script type="text/javascript" src="js/main.js"></script>
 	<script>
-		var todoItemHandler = new TodoItemHandler();
-		todoItemHandler.init();
+		var createLobbyButton = document.getElementById("createLobbyButton");
+		var todoList = document.getElementById("todolist");
+
+		function createTodoList() {
+			todoList.style.display = "block";
+			createLobbyButton.style.display = "none";
+			var randomString = getRandomString()
+			todoItemHandler = new TodoItemHandler(randomString);
+			todoItemHandler.init();
+		}
+		if (document.location.hash !== "") {
+			todoList.style.display = "block";
+			createLobbyButton.style.display = "none";
+			lobbyId = document.location.hash.substr(1);
+			todoItemHandler = new TodoItemHandler(lobbyId);
+			todoItemHandler.init();
+		}
 	</script>
 </html>

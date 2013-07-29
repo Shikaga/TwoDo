@@ -1,11 +1,15 @@
-var TodoItemHandler = function() {
-
+var TodoItemHandler = function(randomString) {
+	this.lobbyId = randomString;
+	socket.emit("loginTo", {
+		"id": this.lobbyId
+	});
+	document.location.hash = this.lobbyId;
 }
 
 TodoItemHandler.prototype.init = function() {
 	this.todoItems = ko.observableArray([]);
 	ko.applyBindings(this.todoItems);
-	socket.emit("getItemsImage");
+	socket.emit("getItemsImage", {lobbyId: this.lobbyId});
 }
 
 TodoItemHandler.prototype.addSerializedItems = function(itemSerialArray) {
@@ -23,14 +27,16 @@ TodoItemHandler.prototype.addSerializedItem = function(id, itemSerial) {
 TodoItemHandler.prototype.createItem = function() {
 	var newItem = new TodoItem(this);
 	socket.emit("addItem", {
-		"id": newItem.uniqueId,
+		lobbyId: this.lobbyId,
+		id: newItem.uniqueId,
 		item: newItem.serialize()
 	});
 }
 
 TodoItemHandler.prototype.updatedItem = function(item) {
 	socket.emit("itemUpdated", {
-		"id": item.uniqueId,
+		lobbyId: this.lobbyId,
+		id: item.uniqueId,
 		item: item.serialize()
 	})
 }

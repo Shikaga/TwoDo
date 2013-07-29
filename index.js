@@ -66,7 +66,7 @@ if (process.env.PORT) {
 	port = Number(process.env.PORT);
 }
 
-var items = {};
+var lobbies = {};
 console.log("Using port: " + port);
 
 io.sockets.on('connection', function (socket) {
@@ -74,18 +74,30 @@ io.sockets.on('connection', function (socket) {
 		socket.emit("chat", data);
 	});
 	socket.on('getItemsImage', function(data) {
+		var items = lobbies[data.lobbyId];
 		socket.emit("itemsImage", {items: items});
 	});
 	socket.on('addItem', function(data) {
+		var items = lobbies[data.lobbyId];
 		items[data.id] = data.item;
 		socket.broadcast.emit("itemAdded", data);
 		socket.emit("itemAdded", data);
 	});
 	socket.on('itemUpdated', function(data) {
+		var items = lobbies[data.lobbyId];
 		console.log(items);
 		console.log(data);
 
 		items[data.id] = data.item;
 		socket.broadcast.emit('itemUpdated', data);
+	})
+	socket.on('loginTo', function(data) {
+		console.log('loginTo', data, lobbies);
+		if (lobbies[data.id] !== undefined) {
+			console.log("Lobby exists");
+		} else {
+			console.log("crateing new lobby");
+			lobbies[data.id] = {};
+		}
 	})
 });
