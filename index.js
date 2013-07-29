@@ -66,10 +66,19 @@ if (process.env.PORT) {
 	port = Number(process.env.PORT);
 }
 
+var items = [];
 console.log("Using port: " + port);
 
 io.sockets.on('connection', function (socket) {
 	socket.on('chat', function (data) {
 		socket.emit("chat", data);
 	});
+	socket.on('getItemsImage', function(data) {
+		socket.emit("itemsImage", {items: items});
+	});
+	socket.on('addItem', function(data) {
+		items.push(data);
+		socket.emit("itemAdded", data);
+	});
+
 });

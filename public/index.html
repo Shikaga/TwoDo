@@ -5,6 +5,7 @@
 		<script type="text/javascript" src="lib/ko.mustache.js"></script>
 		<script type="text/javascript" src="lib/socket.io.js"></script>
 		<script type="text/javascript" src="js/TodoItem.js"></script>
+		<script type="text/javascript" src="js/TodoItemHandler.js"></script>
 		<title>New Development Project</title>
 		<link rel="stylesheet" href="css/main.css">
 
@@ -12,7 +13,7 @@
 			<div class="todoItem">
 				<div class="todoItemInner">
 					<span class="description" data-bind="click: editDescription, visible: !descriptionEditable(), html: description() == '' ? 'Enter Description' : description"></span>
-					<input class="description" data-bind="value: description, visible: descriptionEditable, hasFocus: descriptionEditable" />
+					<input class="description" data-bind="event: {blur: descriptionChanged}, value: description, visible: descriptionEditable, hasFocus: descriptionEditable" />
 
 					<span class="comment" data-bind="click: editComment, visible: !commentEditable(), html: comment() == '' ? 'Enter Comment' : comment"></span>
 					<input class="comment" data-bind="value: comment, visible: commentEditable, hasFocus: commentEditable" />
@@ -23,9 +24,12 @@
 		</script>
 	</head>
 	<body>
-		<div id="testbar"><a class="testbar" href="test/test.html" target="_blank">Run the Tests!</a></div>
-		<div id="textLabel">Hello World!</div><input id="textBox" value="" /><button onclick="setText()">Set Text</button>
-		<span data-bind="template: { name: 'todo-item-template', foreach: todoItems }"></span>
+		<span data-bind="template: { name: 'todo-item-template', foreach: todoItemHandler.todoItems }"></span>
+		<button onclick="todoItemHandler.createItem()">Add Item</button>
 	</body>
 	<script type="text/javascript" src="js/main.js"></script>
+	<script>
+		var todoItemHandler = new TodoItemHandler();
+		todoItemHandler.init();
+	</script>
 </html>

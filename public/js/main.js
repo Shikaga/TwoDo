@@ -5,10 +5,17 @@ socket.on('chat', function (data) {
 	label.innerHTML = data.text;
 });
 
+socket.on('itemsImage', function(data) {
+	console.log('itemsImage', data);
+	todoItemHandler.addSerializedItems(data);
+})
+
+socket.on('itemAdded', function(data) {
+	console.log('itemAdded', data);
+	todoItemHandler.addSerializedItem(data);
+})
+
 function setText() {
 	var value = document.getElementById("textBox").value;
 	socket.emit("chat", {text: value});
 }
-
-todoItems = ko.observableArray([new TodoItem(), new TodoItem()]);
-ko.applyBindings(todoItems);
