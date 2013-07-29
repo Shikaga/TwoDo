@@ -79,6 +79,7 @@ io.sockets.on('connection', function (socket) {
 	socket.on('addItem', function(data) {
 		items[data.id] = data.item;
 		socket.broadcast.emit("itemAdded", data);
+		socket.emit("itemAdded", data);
 	});
 	socket.on('itemUpdated', function(data) {
 		console.log(items);
