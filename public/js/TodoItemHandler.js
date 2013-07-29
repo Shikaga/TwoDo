@@ -35,6 +35,14 @@ TodoItemHandler.prototype.updatedItem = function(item) {
 	})
 }
 
-TodoItemHandler.prototype.updateItem = function(id, item) {
-	console.log(id,item);
+TodoItemHandler.prototype.updateItem = function(id, updatedItem) {
+	console.log("What is happrinh?", id)
+	for (var i=0; i < this.todoItems().length; i++) {
+		var item = this.todoItems()[i];
+		console.log(item);
+		if (item.uniqueId == id) {
+			item.update(updatedItem);
+		}
+		console.log();
+	}
 }

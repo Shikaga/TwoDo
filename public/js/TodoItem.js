@@ -12,7 +12,7 @@ var TodoItem = function(handler, itemSerial) {
 		editDescription: function() {
 			this.descriptionEditable(!this.descriptionEditable());
 		},
-		descriptionChanged: function(e) {
+		changed: function(e) {
 			console.log(this.description());
 			handler.updatedItem(this);
 			return true;
@@ -27,19 +27,20 @@ var TodoItem = function(handler, itemSerial) {
 			return {
 				uniqueId: this.uniqueId,
 				description: this.description(),
-				//descriptionEditable: this.descriptionEditable(),
 				comment: this.comment(),
-				//commentEditable: this.commentEditable(),
 				complete: this.complete()
 			}
+		},
+		update: function(updatedItem) {
+			this.description(updatedItem.description);
+			this.comment(updatedItem.comment);
+			this.complete(updatedItem.complete);
 		}
 	}
 	if (itemSerial !== undefined) {
 		item.uniqueId = itemSerial.uniqueId;
 		item.description(itemSerial.description);
-		//this.descriptionEditable(),
 		item.comment(itemSerial.comment);
-		//this.commentEditable(),
 		item.complete(itemSerial.complete);
 	}
 	return item;

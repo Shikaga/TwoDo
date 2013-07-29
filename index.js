@@ -78,13 +78,13 @@ io.sockets.on('connection', function (socket) {
 	});
 	socket.on('addItem', function(data) {
 		items[data.id] = data.item;
-		socket.emit("itemAdded", data);
+		socket.broadcast.emit("itemAdded", data);
 	});
 	socket.on('itemUpdated', function(data) {
 		console.log(items);
 		console.log(data);
 
 		items[data.id] = data.item;
-		socket.emit('itemUpdated', data);
+		socket.broadcast.emit('itemUpdated', data);
 	})
 });
